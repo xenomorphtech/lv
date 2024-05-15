@@ -17,7 +17,7 @@ defmodule LvRolfWeb.Router do
   scope "/", LvRolfWeb do
     pipe_through :browser
 
-live "/table", TableLive
+    live "/table", TableLive
     get "/", PageController, :home
   end
 

@@ -9,6 +9,15 @@ defmodule LvRolfWeb.TableLive do
       %{id: 3, name: "Bob", age: 35}
     ]
 
+    remote_node = :"nc_serv@archlinux-latest-64-minimal"
+    table_name = CoopLog
+
+    data =
+      :rpc.call(remote_node, :ets, :tab2list, [table_name])
+      |> Enum.map(fn {{x, y}, z} ->
+        %{id: x, name: y, age: z}
+      end)
+
     {:ok, assign(socket, data: data)}
   end
 
@@ -57,7 +66,9 @@ defmodule LvRolfWeb.TableLive2 do
   end
 
   def mount(_params, _session, socket) do
-    sentence = "<noun>Кошка</noun> <adverb>быстро</adverb> <verb>прыгнула</verb> на <adjective>высокий</adjective> <noun>забор</noun>."
+    sentence =
+      "<noun>Кошка</noun> <adverb>быстро</adverb> <verb>прыгнула</verb> на <adjective>высокий</adjective> <noun>забор</noun>."
+
     colored_sentence = color_sentence(sentence)
 
     {:ok, assign(socket, colored_sentence: colored_sentence, dragged_image: nil)}
